@@ -37,6 +37,7 @@ const Place_order = () => {
                     {cartItems.map((item, index) => (
                         <li key={index} className='flex justify-between p-2 border-b'>
                             <span>{item.productName} </span>
+                            <span>size :{item.selectedsize} </span>
                             <span>&#8377;{item.price} x {item.quantity} = &#8377;{item.price * item.quantity}</span>
                         </li>
                     ))}

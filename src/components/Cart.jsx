@@ -37,6 +37,7 @@ const Cart = () => {
                                                 <span className='text-xl text-[#282C3F]'> MRP</span>
                                                 <del className='text-xl pl-1 text-[#282C3F]'>&#8377;{item.mrp}{item.productID} </del>
                                                 <h1 className='ml-2 text-orange-700'>{item.discountDisplayLabel}</h1>
+                                                <h3 className='text-xl pl-3 font-bold text-[#282C3F]'>selected size:{item.selectedsize}</h3>
                                             </div>
                                             <h5 className='text-sm my-2 text-[#282C3F]'>(min. order 10 piece)</h5>
                                             <h3 className='text-orange-700 font-bold mt-2'>inclusive of all taxes</h3>
@@ -46,9 +47,11 @@ const Cart = () => {
                                             </div>
                                             <div className=' mx-auto my-0 right-0 left-0 mt-7 flex justify-between p-2'>
                                                 <div className='bg-slate-200 rounded-md p-2' >
+
                                                     <p className='font-bold text-[#DC4326]'>Total ammount: </p>
                                                     <p className='font-bold text-xl  text-[#282C3F]'>&#8377;{item.price * item.quantity}/-</p>
                                                 </div>
+                                                
                                                 <div className='text-3xl flex justify-center  items-center bg-slate-200 rounded-3xl min-w-28'>
                                                     <button onClick={() => dispatch(decrementQuantity(item))}
                                                         className='rounded-full h-7 w-7 bg-[#DC4326] flex items-center justify-center hover:bg-orange-600 text-white'>-</button>

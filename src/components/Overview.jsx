@@ -17,18 +17,16 @@ const Overview = () => {
     console.log(selectedsize)    
 
 
-    // Use the sizes directly from the product data
     const sizeArray = product.sizes.split(',');
 
     const handleAddItem = () => {
         if (!selectedsize) {
             alert("Please select a size.");
-            return; // Add this line to prevent further execution
+            return; 
         }
-        dispatch(addItem({ ...product, selectedsize })); // Include selected size
+        dispatch(addItem({ ...product, selectedsize })); 
     };
     
-
     return (
         <div>
             <Header />
@@ -81,9 +79,12 @@ const Overview = () => {
                             <p className='max-w-[560px] text-sm pr-32 float-end'>min. order 10 pieces</p>
                             {cartItems.map(cartdata => (
                                 <>
-                                {cartdata.product === product.product ? (
+                                {console.log('----->',cartdata) }
+                                {console.log('----->',cartdata.selectedsize) }
+                                {cartdata.product === product.product && cartdata.selectedsize === selectedsize ? (
                                     <div className=' mx-auto my-0 right-0 left-0 mt-7 flex justify-between p-2'>
                                     <div className='bg-slate-200 rounded-md p-2' >
+                                    <p className='font-bold text-black'>selected size : {cartdata.selectedsize} </p>
                                         <p className='font-bold text-[#DC4326]'>Total ammount: </p>
                                         <p className='font-bold text-xl  text-[#282C3F]'>&#8377;{product.price * cartdata.quantity}/-</p>
                                     </div>
@@ -100,6 +101,9 @@ const Overview = () => {
                                 }
                                 </>
                             ))}
+
+                            
+                            
                             <div className='my-7'>
                                 <button onClick={()=>handleAddItem()}
                                     className='bg-[#DC4326] text-white rounded font-bold p-5 min-w-72'>ADD TO CART</button>

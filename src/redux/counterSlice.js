@@ -1,4 +1,71 @@
+// import { createSlice } from "@reduxjs/toolkit";
+
+
+// const generateUniqueId = (productId, selectedSize) => {
+//     return `${productId}-${selectedSize}`;
+// };
+
+// export const cartSlice = createSlice({
+//     name: 'cart',
+//     initialState: {
+//         items: JSON.parse(localStorage.getItem('cartItems')) || [],
+//     },
+//     reducers: {
+//         addItem: (state, action) => {
+//             const { product ,selectedsize} = action.payload; 
+//             const existingItem = state.items.find(item => item.product === product && item.selectedsize === selectedsize);
+
+//             if (existingItem) {
+//                 existingItem.quantity += 1;
+//             } else {
+//                 state.items.push({ ...action.payload, quantity: 1 }); 
+//             }
+//             localStorage.setItem('cartItems', JSON.stringify(state.items)); 
+//         },
+//         removeItem: (state, action) => {
+//             const { product } = action.payload;
+//             state.items = state.items.filter(item => item.product !== product); 
+//             localStorage.setItem('cartItems', JSON.stringify(state.items));
+//         },
+//         incrementQuantity: (state, action) => {
+//             const { product } = action.payload;
+//             const existingItem = state.items.find(item => item.product === product );
+//             if (existingItem) {
+//                 existingItem.quantity += 1; // Increase quantity
+//                 localStorage.setItem('cartItems', JSON.stringify(state.items));
+//             }
+//         },
+//         decrementQuantity: (state, action) => {
+//             const { product } = action.payload;
+//             const existingItem = state.items.find(item => item.product === product);
+//             if (existingItem) {
+//                 if (existingItem.quantity > 1) {
+//                     existingItem.quantity -= 1; 
+//                 } else {
+//                     state.items = state.items.filter(item => item.product !== product);
+//                 }
+//                 localStorage.setItem('cartItems', JSON.stringify(state.items));
+//             }
+//         },
+//         clearCart: (state) => {
+//             state.items = [];
+//             localStorage.setItem('cartItems', JSON.stringify(state.items));
+//         },
+//     },
+// });
+
+
+// export const { addItem, removeItem, clearCart, incrementQuantity, decrementQuantity } = cartSlice.actions;
+
+// export const cartReducer = cartSlice.reducer;
+
+
 import { createSlice } from "@reduxjs/toolkit";
+
+// Function to generate a unique ID based on product ID and selected size
+const generateUniqueId = (productId, selectedSize) => {
+    return `${productId}-${selectedSize}`;
+};
 
 export const cartSlice = createSlice({
     name: 'cart',
@@ -7,37 +74,41 @@ export const cartSlice = createSlice({
     },
     reducers: {
         addItem: (state, action) => {
-            const { product } = action.payload; 
-            const existingItem = state.items.find(item => item.product === product);
+            const { product, selectedsize } = action.payload; 
+            const uniqueId = generateUniqueId(product, selectedsize);
+            const existingItem = state.items.find(item => item.id === uniqueId);
 
             if (existingItem) {
-                existingItem.quantity += 1;
+                existingItem.quantity += 1; // Increment quantity if already exists
             } else {
-                state.items.push({ ...action.payload, quantity: 1 }); 
+                state.items.push({ ...action.payload, id: uniqueId, quantity: 1 }); // Add new item with quantity 1
             }
             localStorage.setItem('cartItems', JSON.stringify(state.items)); 
         },
         removeItem: (state, action) => {
-            const { product } = action.payload;
-            state.items = state.items.filter(item => item.product !== product); 
+            const { product, selectedsize } = action.payload;
+            const uniqueId = generateUniqueId(product, selectedsize);
+            state.items = state.items.filter(item => item.id !== uniqueId); 
             localStorage.setItem('cartItems', JSON.stringify(state.items));
         },
         incrementQuantity: (state, action) => {
-            const { product } = action.payload;
-            const existingItem = state.items.find(item => item.product === product);
+            const { product, selectedsize } = action.payload;
+            const uniqueId = generateUniqueId(product, selectedsize);
+            const existingItem = state.items.find(item => item.id === uniqueId);
             if (existingItem) {
                 existingItem.quantity += 1; // Increase quantity
                 localStorage.setItem('cartItems', JSON.stringify(state.items));
             }
         },
         decrementQuantity: (state, action) => {
-            const { product } = action.payload;
-            const existingItem = state.items.find(item => item.product === product);
+            const { product, selectedsize } = action.payload;
+            const uniqueId = generateUniqueId(product, selectedsize);
+            const existingItem = state.items.find(item => item.id === uniqueId);
             if (existingItem) {
                 if (existingItem.quantity > 1) {
                     existingItem.quantity -= 1; 
                 } else {
-                    state.items = state.items.filter(item => item.product !== product);
+                    state.items = state.items.filter(item => item.id !== uniqueId); // Remove item if quantity is 0
                 }
                 localStorage.setItem('cartItems', JSON.stringify(state.items));
             }
@@ -49,7 +120,7 @@ export const cartSlice = createSlice({
     },
 });
 
-
+// Export actions and reducer
 export const { addItem, removeItem, clearCart, incrementQuantity, decrementQuantity } = cartSlice.actions;
 
 export const cartReducer = cartSlice.reducer;
